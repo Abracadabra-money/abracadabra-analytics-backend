@@ -1,0 +1,132 @@
+{
+    "extends": [
+        "airbnb-base",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:jest/all",
+        "prettier",
+        "prettier/standard",
+        "prettier/@typescript-eslint"
+    ],
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+    },
+    "plugins": [
+        "import",
+        "@typescript-eslint",
+        "prettier",
+        "jest"
+    ],
+    "rules": {
+        "jest/no-hooks": "off",
+        "jest/prefer-expect-assertions": 0,
+        "jest/no-truthy-falsy": 0,
+        "jest/no-restricted-matchers": [
+            "error",
+            {
+                "toBeTruthy": "Avoid `toBeTruthy`",
+                "toBeFalsy": "Avoid `toBeFalsy`"
+            }
+        ],
+        "prettier/prettier": "error",
+        "import/no-extraneous-dependencies": ["error", {
+            "devDependencies": ["**/*.spec.ts"]
+        }],
+        "import/order": ["error", {
+            "newlines-between": "always",
+            "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": false
+            },
+            "pathGroups": [
+                {
+                    "pattern": "./**",
+                    "group": "internal",
+                    "position": "after"
+                },
+                {
+                    "pattern": "../**",
+                    "group": "internal",
+                    "position": "after"
+                }
+            ]
+        }],
+        "import/prefer-default-export": 0,
+        "import/extensions": 0,
+        "import/no-cycle": 0,
+        "no-useless-constructor": 0,
+        "class-methods-use-this": 0,
+        "@typescript-eslint/explicit-member-accessibility": [
+            "error",
+            {
+                "accessibility": "explicit",
+                "overrides": {
+                    "constructors": "no-public"
+                }
+            }
+        ],
+        "@typescript-eslint/explicit-function-return-type": [
+            "error",
+            {
+                "allowExpressions": true,
+                "allowTypedFunctionExpressions": true
+            }
+        ],
+        "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "default",
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "memberLike",
+                "format": ["camelCase", "UPPER_CASE", "snake_case"]
+            },
+            {
+                "selector": "enumMember",
+                "format": ["PascalCase", "UPPER_CASE"]
+            },
+            {
+                "selector": "property",
+                "format": ["camelCase", "UPPER_CASE", "snake_case"]
+            },
+            {
+                "selector": "variable",
+                "format": ["camelCase", "UPPER_CASE"]
+            },
+            {
+                "selector": "variable",
+                "filter": {
+                    "regex": "^Use|Enum$",
+                    "match": true
+                },
+                "format": ["camelCase", "PascalCase", "UPPER_CASE"]
+            },
+            {
+                "selector": "typeLike",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "function",
+                "filter": {
+                    "regex": "^Is|^Use|Dto$|Factory$",
+                    "match": true
+                },
+                "format": ["camelCase", "PascalCase"]
+            }
+        ]
+    }
+}

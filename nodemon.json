@@ -1,0 +1,6 @@
+{
+    "watch": ["*.ts"],
+    "ext": "ts",
+    "ignore": ["./**/*.spec.ts"],
+    "exec": "node --max-old-space-size=2048 --require ts-node/register --require tsconfig-paths/register ./src/main.ts"
+}

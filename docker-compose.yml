@@ -1,0 +1,50 @@
+version: '3.8'
+
+networks:
+  statistic:
+    external: true
+
+services:    
+  as-nodejs:
+    image: 'node:16'
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    container_name: as-nodejs
+    volumes:
+      - ./:/app
+    env_file:
+        - .env
+    working_dir: /app
+    command: npx nodemon --config nodemon.json
+    networks:
+      - statistic
+    depends_on:
+      - as-postgres
+      - as-redis
+    links: 
+      - as-postgres
+      - as-redis
+  
+  as-postgres:
+    container_name: as-postgres
+    image: postgres:12
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: ${PG_SUPERUSER_NAME}
+      POSTGRES_PASSWORD: ${PG_SUPERUSER_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+    networks:
+      - statistic
+  
+  as-redis:
+    container_name: as-redis
+    image: "redis:alpine"
+    ports:
+      - 6379:6379
+    networks:
+      - statistic
+    volumes:
+        - ./docker/redis/data:/data

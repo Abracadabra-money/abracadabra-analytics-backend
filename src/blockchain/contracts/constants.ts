@@ -1,0 +1,6 @@
+export const LIQUIDATION_MULTIPLIER_PRECISION = 1e5;
+export const LTV_PRECISION = 1e5;
+export const BORROW_OPENING_FEE_PRECISION = 1e5;
+
+export const DISTRIBUTION_PART = 10;
+export const DISTRIBUTION_PRECISION = 100;
