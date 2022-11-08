@@ -35,8 +35,8 @@ export class HealthService {
                 return {
                     currentBlock,
                     network,
-                    pools: pools.map((pool) => {
-                        const lastSyncBlock = this.getPoolLastBlock(pool.address);
+                    pools: await Promise.all(pools.map(async (pool) => {
+                        const lastSyncBlock = await this.getPoolLastBlock(pool.address);
                         const lastBlock = lastSyncBlock || Number(pool.initialBlock);
                         return {
                             name: pool.name,
@@ -44,7 +44,7 @@ export class HealthService {
                             needToSync: currentBlock - lastBlock,
                             syncing: this.healthStoreService.getPoolSyncStatus(pool.address),
                         };
-                    }),
+                    })),
                 };
             }),
         );

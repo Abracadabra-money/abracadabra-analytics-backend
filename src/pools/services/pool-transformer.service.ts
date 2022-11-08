@@ -16,7 +16,7 @@ export class PoolTransformerService {
             borrowFee: pool.borrowFeePercent,
             interest: pool.interestPercent,
             totalBorrowed: pool.lastState ? toTokenValue(parseInt(pool.lastState.totalBorrow), 18): 0,
-            totalCollaterel: pool.lastState ? toTokenValue(parseInt(pool.lastState.totalCollateralShare), pool.decimals[0]): 0,
+            totalCollaterel: pool.lastState ? parseInt(pool.lastState.totalCollateralShare) / parseInt(pool.lastState.exchangeRate): 0,
         };
     }
 }

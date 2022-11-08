@@ -26,7 +26,7 @@ export class PoolSyncTaskService {
 
     public async syncTask(pool: PoolsEntity, currentBlock: number): Promise<void> {
         const syncStatus = this.healthService.getPoolSyncStatus(pool.address);
-        let syncLastBlock = this.healthService.getPoolLastBlock(pool.address);
+        let syncLastBlock = await this.healthService.getPoolLastBlock(pool.address);
         if (!pool.canSync || syncStatus || syncLastBlock === currentBlock) return;
 
         this.healthService.setPoolSyncStatus(pool.address, true);
@@ -34,8 +34,8 @@ export class PoolSyncTaskService {
 
         if (pool.fullReSync) {
             await this.poolSyncDbHelperService.poolReSync(pool);
-            this.healthService.setPoolLastBlock(pool.address, 0);
-            syncLastBlock = this.healthService.getPoolLastBlock(pool.address);
+            await this.healthService.setPoolLastBlock(pool.address, 0);
+            syncLastBlock = await this.healthService.getPoolLastBlock(pool.address);
         }
         const savedLastSyncBlock = await this.poolSyncDbHelperService.getPoolLastSyncBlock(pool);
         const lastBlock = savedLastSyncBlock > syncLastBlock ? savedLastSyncBlock : syncLastBlock;
@@ -50,11 +50,12 @@ export class PoolSyncTaskService {
                 await this.accountHistoryWrapService.saveHistories(account, addressesHistory[address], pool);
             }
             this.healthService.setPoolSyncStatus(pool.address, false);
-            this.healthService.setPoolLastBlock(pool.address, toBlock);
+            await this.healthService.setPoolLastBlock(pool.address, toBlock);
             this.loggerService.info('Sync complete', { extra: { pool: pool.address, time: Date.now() - startTime, fromBlock, toBlock } });
         } catch (err) {
             this.healthService.setPoolSyncStatus(pool.address, false);
             this.loggerService.error('Sync failed', { extra: { pool: pool.address, fromBlock, toBlock } });
+            throw err;
         }
     }
 }

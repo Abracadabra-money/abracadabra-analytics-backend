@@ -36,7 +36,7 @@ export class LoansService {
     public getLiquidatidLoans(account: string, poolId?: string, network?: Networks, assetType?: AssetType, pagination: PaginationDto = {}) {
         const { pageSize = DEFAULT_PAGE_SIZE, pageNumber = DEFAULT_PAGE_NUMBER } = pagination;
 
-        const qb = this.getLoanQuaryBuilder().where("account.address ILIKE :account'", { account }).where('loan.loanStatus = :loanStatus', { loanStatus: LoanStatus.LIQUIDATED });
+        const qb = this.getLoanQuaryBuilder().where("account.address ILIKE :account", { account: `%${account}%` }).andWhere('loan.loanStatus = :loanStatus', { loanStatus: LoanStatus.LIQUIDATED });
 
         if (poolId) {
             qb.andWhere('pool.id = :poolId', { poolId });
